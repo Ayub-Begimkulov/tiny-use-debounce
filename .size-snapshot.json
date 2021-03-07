@@ -1,0 +1,16 @@
+{
+  "index.js": {
+    "bundled": 1583,
+    "minified": 1583,
+    "gzipped": 830,
+    "treeshaked": {
+      "rollup": {
+        "code": 50,
+        "import_statements": 50
+      },
+      "webpack": {
+        "code": 2557
+      }
+    }
+  }
+}

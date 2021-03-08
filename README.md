@@ -14,3 +14,9 @@ React hook for debouncing and throttling.
 ## Memoization
 
 ## API
+
+## Contributing
+
+## License
+
+MIT

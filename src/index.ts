@@ -1,8 +1,7 @@
 import { useLayoutEffect, useMemo, useRef } from "react";
 import { unstable_batchedUpdates } from "react-dom";
-import { debounce, throttle } from "lodash-es";
 
-interface AnyFunction {
+export interface AnyFunction {
   (...args: any[]): any;
 }
 
@@ -16,7 +15,7 @@ type DebounceFunction<T extends AnyFunction, U extends AnyFunction> = {
   (...args: Parameters<T>): void;
 } & GetStaticMethods<ReturnType<U>>;
 
-export function createDebouncedHook<DebounceFn extends AnyFunction>(
+export function createDebounceHook<DebounceFn extends AnyFunction>(
   debounce: DebounceFn
 ) {
   return function useDebounce<Callback extends AnyFunction>(
@@ -36,8 +35,8 @@ export function createDebouncedHook<DebounceFn extends AnyFunction>(
   };
 }
 
-export const useDebounce = createDebouncedHook(debounce);
-export const useThrottle = createDebouncedHook(throttle);
+// export const useDebounce = createDebouncedHook(debounce);
+// export const useThrottle = createDebouncedHook(throttle);
 
 function useLatest<T>(value: T) {
   const valueRef = useRef(value);

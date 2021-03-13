@@ -1,3 +1,11 @@
 export { createDebounceHook } from "./create-debounce-hook";
-export { useDebouncedCallback } from "./use-debounce";
-export { useThrottledCallback } from "./use-throttle";
+export {
+  useDebounce,
+  // istanbul ignore next
+  useDebounce as useDebouncedCallback,
+} from "./use-debounce";
+export {
+  useThrottle,
+  // istanbul ignore next
+  useThrottle as useThrottledCallback,
+} from "./use-throttle";

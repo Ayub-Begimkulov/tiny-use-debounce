@@ -12,11 +12,8 @@ React hook for debouncing and throttling.
 ## Usage
 
 ```jsx
-import { createDebounceHook } from "tiny-use-debounce";
+import { useDebounce, useThrottle } from "tiny-use-debounce";
 import { debounce, throttle } from "lodash-es";
-
-const useDebounce = createDebounceHook(debounce);
-const useThrottle = createDebounceHook(throttle);
 
 const App = () => {
   const debouncedMouseMove = useDebounce(() => console.log("mouse move"), 300);
@@ -24,10 +21,22 @@ const App = () => {
 
   return (
     <div onMouseMove={debouncedMouseMove} onScroll={throttledScroll}>
-      {...}
+      {/* ... */}
     </div>
   );
 };
+```
+
+## Customization
+
+By default `useDebounce` and `useThrottle` use `debounce` and `throttle` from `lodash` under the hood. If you don't use `lodash` in your project, you could create hooks with your own implementation of these function (which will result in smaller bundle size).
+
+```jsx
+import { createDebounceHook } from "tiny-use-debounce";
+import { debounce, throttle } from "./some/file";
+
+const useDebounce = createDebounceHook(debounce);
+const useThrottle = createDebounceHook(throttle);
 ```
 
 ## Memoization
@@ -43,7 +52,13 @@ import { useDebounce } from "tiny-use-debounce";
 const stableOptions = { leading: true };
 
 const App = ({ shouldCallInitially }) => {
-  const debounceFn = useDebounce(() => {...}, 200, stableOptions);
+  const debounceFn = useDebounce(
+    () => {
+      /* ... */
+    },
+    200,
+    stableOptions
+  );
 
   // options are dynamic, useMemo to reduce
   // updates
@@ -52,14 +67,42 @@ const App = ({ shouldCallInitially }) => {
     [shouldCallInitially]
   );
 
-  const debouncedFn2 = useDebounce(() => {...}, 200, dynamicDebounceOptions);
+  const debouncedFn2 = useDebounce(
+    () => {
+      /* ... */
+    },
+    200,
+    dynamicDebounceOptions
+  );
 };
 ```
 
 ## API
 
-## Contributing
+### `createDebounceHook`
+
+Usage:
+
+- `createDebounceHook(debounce)`
+
+Creates hook that uses proved function for debouncing.
+
+### `useDebounce`
+
+Usage:
+
+- `useDebounce(cb, wait?, options?)`
+
+Creates debounced function.
+
+### `useThrottle`
+
+Usage:
+
+- `useThrottle(cb, wait?, options?)`
+
+Creates throttled function.
 
 ## License
 
-MIT
+[MIT](./LICENSE)

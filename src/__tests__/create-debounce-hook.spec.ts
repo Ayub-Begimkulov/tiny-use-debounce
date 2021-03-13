@@ -15,7 +15,7 @@ function debounce<T extends AnyFunction>(cb: T, wait: number) {
 
 jest.useFakeTimers();
 
-describe("useDebounce", () => {
+describe("createDebounceHook", () => {
   it("basic", () => {
     const useDebounce = createDebounceHook(debounce);
     const mock = jest.fn();
@@ -72,6 +72,20 @@ describe("useDebounce", () => {
     jest.advanceTimersByTime(100);
     expect(mock).toBeCalledTimes(3);
     expect(mock).toBeCalledWith(4);
+  });
+
+  it("should update if debounce arguments aren't referentially equal", () => {
+    const useDebounce = createDebounceHook(debounce);
+    const fn = () => {};
+    const { result, rerender } = renderHook(
+      ({ wait }) => useDebounce(fn, wait),
+      {
+        initialProps: { wait: 100 },
+      }
+    );
+    let currentResult = result.current;
+    rerender({ wait: 101 });
+    expect(result.current).not.toBe(currentResult);
   });
 
   // TODO how to test that hook batches updates?

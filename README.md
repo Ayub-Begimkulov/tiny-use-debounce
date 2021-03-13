@@ -2,6 +2,8 @@
 
 React hook for debouncing and throttling.
 
+![Codecov](https://img.shields.io/codecov/c/github/Ayub-Begimkulov/tiny-use-debounce?style=flat-square)
+
 ## Features
 
 - Tiny Size
@@ -29,7 +31,7 @@ const App = () => {
 
 ## Customization
 
-By default `useDebounce` and `useThrottle` use `debounce` and `throttle` from `lodash` under the hood. If you don't use `lodash` in your project, you could create hooks with your own implementation of these function (which will result in smaller bundle size).
+If you want to pass custom `debounce` or `throttle` implementation (or any function that has similar interface), you could use `createDebounceHook`. It takes a function that'll debounce a callback and returns hook.
 
 ```jsx
 import { createDebounceHook } from "tiny-use-debounce";

@@ -9,7 +9,15 @@ const distDir = path.resolve(__dirname, "dist");
 
 export default {
   input: path.resolve(__dirname, "src", "index.ts"),
-  plugins: [typescript(), commonjs(), nodeResolve(), terser(), sizeSnapshot()],
+  plugins: [
+    typescript(),
+    terser({
+      output: {
+        comments: false,
+      },
+    }),
+    sizeSnapshot(),
+  ],
   external: ["react", "react-dom"],
   output: [
     {

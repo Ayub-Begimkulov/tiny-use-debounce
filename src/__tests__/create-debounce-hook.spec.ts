@@ -1,12 +1,13 @@
-import { AnyFunction, createDebounceHook } from "..";
-import { act, renderHook } from "@testing-library/react-hooks";
 import { useReducer } from "react";
+import { act, renderHook } from "@testing-library/react-hooks";
+import { createDebounceHook } from "..";
+import { AnyFunction } from "src/create-debounce-hook";
 
 function debounce<T extends AnyFunction>(cb: T, wait: number) {
   let timeoutId: number | null = null;
   return function (...args: Parameters<T>) {
     if (typeof timeoutId === "number") clearTimeout(timeoutId);
-    timeoutId = window.setTimeout(() => {
+    timeoutId = (setTimeout as typeof window.setTimeout)(() => {
       cb(...args);
     }, wait);
   };
@@ -37,7 +38,7 @@ describe("useDebounce", () => {
     expect(result.current).toBe(currentResult);
   });
 
-  it("returned function should hold latest values in the closure", () => {
+  it("should hold latest values in the closure", () => {
     const useDebounce = createDebounceHook(debounce);
     const mock = jest.fn();
     let renderCount = 0;

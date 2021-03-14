@@ -11,6 +11,16 @@ React hooks for debouncing and throttling.
 - Fully tested
 - TypeScript support out of the box
 
+## Installation
+
+```shell
+# npm
+npm i tiny-use-debounce
+
+# yarn
+yarn add tiny-use-debounce
+```
+
 ## Usage
 
 ```jsx

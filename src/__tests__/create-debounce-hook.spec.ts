@@ -1,23 +1,11 @@
 import { useReducer } from "react";
 import { act, renderHook } from "@testing-library/react-hooks";
-import { createDebounceHook } from "..";
-import { AnyFunction } from "src/create-debounce-hook";
-
-function debounce<T extends AnyFunction>(cb: T, wait: number) {
-  let timeoutId: number | null = null;
-  return function (...args: Parameters<T>) {
-    if (typeof timeoutId === "number") clearTimeout(timeoutId);
-    timeoutId = (setTimeout as typeof window.setTimeout)(() => {
-      cb(...args);
-    }, wait);
-  };
-}
+import { useDebounce, useThrottle } from "..";
 
 jest.useFakeTimers();
 
-describe("createDebounceHook", () => {
+describe.each([useDebounce, useThrottle])("createDebounceHook", useDebounce => {
   it("basic", () => {
-    const useDebounce = createDebounceHook(debounce);
     const mock = jest.fn();
     const { result } = renderHook(() => useDebounce(mock, 100));
     expect(typeof result.current).toBe("function");
@@ -29,7 +17,6 @@ describe("createDebounceHook", () => {
   });
 
   it("should return the same reference to a function", () => {
-    const useDebounce = createDebounceHook(debounce);
     const { result, rerender } = renderHook(fn => useDebounce(fn, 100), {
       initialProps: () => {},
     });
@@ -39,7 +26,6 @@ describe("createDebounceHook", () => {
   });
 
   it("should hold latest values in the closure", () => {
-    const useDebounce = createDebounceHook(debounce);
     const mock = jest.fn();
     let renderCount = 0;
     const { result, rerender } = renderHook(() => {
@@ -75,7 +61,6 @@ describe("createDebounceHook", () => {
   });
 
   it("should update if debounce arguments aren't referentially equal", () => {
-    const useDebounce = createDebounceHook(debounce);
     const fn = () => {};
     const { result, rerender } = renderHook(
       ({ wait }) => useDebounce(fn, wait),
@@ -92,7 +77,6 @@ describe("createDebounceHook", () => {
   // If I use `act` it batches them without `unstable_batchedUpdates`
   // if I doesn't do it, `unstable_batchedUpdates` doesn't seem to work
   it.skip("should batch updates", () => {
-    const useDebounce = createDebounceHook(debounce);
     const mock = jest.fn();
     let renderCount = 0;
     const { result } = renderHook(

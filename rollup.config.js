@@ -23,6 +23,13 @@ const createRollupConfig = ({ modern }) => {
         format: "es",
         file: path.resolve(distDir, modern ? "index.js" : "index.ie11.js"),
       },
+      {
+        format: "cjs",
+        file: path.resolve(
+          distDir,
+          modern ? "index.cjs.js" : "index.cjs.ie11.js"
+        ),
+      },
     ],
   };
 };

@@ -2,9 +2,10 @@
   "name": "tiny-use-debounce",
   "version": "1.0.0",
   "description": "React hooks for debouncing and throttling.",
-  "main": "dist/index.js",
+  "main": "dist/index.cjs.js",
   "module": "dist/index.js",
   "types": "dist/index.d.ts",
+  "sideEffects": false,
   "license": "MIT",
   "author": "Ayub Begimkulov",
   "scripts": {
@@ -34,6 +35,15 @@
     "react": ">=16.8.0 || 17.x",
     "react-dom": ">=16.8.0 || 17.x"
   },
+  "keywords": [
+    "use-debounce",
+    "use-throttle",
+    "tiny-use-debounce",
+    "debounce",
+    "throttle",
+    "react-hooks",
+    "react"
+  ],
   "repository": {
     "type": "git",
     "url": "https://github.com/Ayub-Begimkulov/tiny-use-debounce"
@@ -41,5 +51,8 @@
   "bugs": {
     "url": "https://github.com/Ayub-Begimkulov/tiny-use-debounce/issues"
   },
-  "homepage": "https://github.com/Ayub-Begimkulov/tiny-use-debounce#readme"
+  "homepage": "https://github.com/Ayub-Begimkulov/tiny-use-debounce#readme",
+  "files": [
+    "dist"
+  ]
 }

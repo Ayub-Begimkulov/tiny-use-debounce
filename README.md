@@ -2,7 +2,11 @@
 
 React hooks for debouncing and throttling.
 
-![Codecov](https://img.shields.io/codecov/c/github/Ayub-Begimkulov/tiny-use-debounce?style=flat-square)
+[![GitHub Workflow Status](https://img.shields.io/github/workflow/status/Ayub-Begimkulov/tiny-use-debounce/Node.js%20CI?style=flat-square)](https://github.com/Ayub-Begimkulov/tiny-use-debounce/actions)
+[![Codecov](https://img.shields.io/codecov/c/github/Ayub-Begimkulov/tiny-use-debounce?style=flat-square)](https://app.codecov.io/gh/Ayub-Begimkulov/tiny-use-debounce)
+[![npm bundle size](https://img.shields.io/bundlephobia/minzip/tiny-use-debounce?style=flat-square)](https://bundlephobia.com/result?p=tiny-use-debounce)
+[![npm](https://img.shields.io/npm/v/tiny-use-debounce?style=flat-square)](https://www.npmjs.com/package/tiny-use-debounce)
+[![GitHub](https://img.shields.io/github/license/Ayub-Begimkulov/tiny-use-debounce?style=flat-square)](https://github.com/Ayub-Begimkulov/tiny-use-debounce/blob/master/LICENSE)
 
 ## Features
 

@@ -1,6 +1,6 @@
 # Tiny Use Debounce
 
-React hook for debouncing and throttling.
+React hooks for debouncing and throttling.
 
 ![Codecov](https://img.shields.io/codecov/c/github/Ayub-Begimkulov/tiny-use-debounce?style=flat-square)
 

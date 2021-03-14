@@ -1,14 +1,13 @@
-import { debounce } from "../debounce";
+import { throttle } from "../debounce";
 
 jest.useFakeTimers("modern");
 
-describe("debounce", () => {
+describe("throttle", () => {
   it("should call function after timeout", () => {
     const mock = jest.fn();
-    const debouncedMock = debounce(mock, 100);
+    const throttledMock = throttle(mock, 100);
 
-    debouncedMock();
-
+    throttledMock();
     expect(mock).not.toBeCalled();
 
     jest.advanceTimersByTime(50);
@@ -20,50 +19,48 @@ describe("debounce", () => {
     expect(mock).toBeCalledTimes(1);
   });
 
-  it("should reset timer on call", () => {
+  it("should not call function more often than timeout", () => {
     const mock = jest.fn();
-    const debouncedMock = debounce(mock, 100);
+    const throttledMock = throttle(mock, 100);
 
-    debouncedMock();
-
+    throttledMock();
     expect(mock).not.toBeCalled();
 
     jest.advanceTimersByTime(50);
-
-    expect(mock).not.toBeCalled();
-
-    // should reset timer
-    debouncedMock();
-
-    jest.advanceTimersByTime(50);
+    throttledMock();
     expect(mock).not.toBeCalled();
 
     jest.advanceTimersByTime(50);
     expect(mock).toBeCalledTimes(1);
+
+    throttledMock();
+
+    jest.advanceTimersByTime(50);
+    throttledMock();
+    expect(mock).toBeCalledTimes(1);
+
+    jest.advanceTimersByTime(50);
+
+    expect(mock).toBeCalledTimes(2);
   });
 
   it("cancel", () => {
     const mock = jest.fn();
-    const debouncedMock = debounce(mock, 100);
+    const throttledMock = throttle(mock, 100);
     // should not do anything
-    debouncedMock.cancel();
+    throttledMock.cancel();
 
-    debouncedMock();
-
+    throttledMock();
     expect(mock).not.toBeCalled();
 
     jest.advanceTimersByTime(50);
+    expect(mock).not.toBeCalled();
+    throttledMock.cancel();
 
     expect(mock).not.toBeCalled();
-
-    debouncedMock.cancel();
-
-    jest.advanceTimersByTime(50);
-
-    expect(mock).toBeCalledTimes(0);
 
     // should work as usual after cancel
-    debouncedMock();
+    throttledMock();
     expect(mock).not.toBeCalled();
 
     jest.advanceTimersByTime(50);

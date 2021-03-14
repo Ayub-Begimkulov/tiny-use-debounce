@@ -1,8 +1,10 @@
 {
   "name": "tiny-use-debounce",
   "version": "1.0.0",
-  "description": "React hook for debouncing and throttling.",
+  "description": "React hooks for debouncing and throttling.",
   "main": "dist/index.js",
+  "module": "dist/index.js",
+  "types": "dist/index.d.ts",
   "license": "MIT",
   "author": "Ayub Begimkulov",
   "scripts": {

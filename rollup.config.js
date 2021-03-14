@@ -2,27 +2,32 @@ import path from "path";
 import { sizeSnapshot } from "rollup-plugin-size-snapshot";
 import { terser } from "rollup-plugin-terser";
 import typescript from "rollup-plugin-typescript2";
-import commonjs from "@rollup/plugin-commonjs";
-import { nodeResolve } from "@rollup/plugin-node-resolve";
 
 const distDir = path.resolve(__dirname, "dist");
 
-export default {
-  input: path.resolve(__dirname, "src", "index.ts"),
-  plugins: [
-    typescript(),
-    terser({
-      output: {
-        comments: false,
+const createRollupConfig = ({ modern }) => {
+  return {
+    input: path.resolve(__dirname, "src", "index.ts"),
+    plugins: [
+      typescript(!modern && { tsconfig: "./tsconfig.ie11.json" }),
+      terser({
+        output: {
+          comments: false,
+        },
+      }),
+      sizeSnapshot(),
+    ],
+    external: ["react", "react-dom"],
+    output: [
+      {
+        format: "es",
+        file: path.resolve(distDir, modern ? "index.js" : "index.ie11.js"),
       },
-    }),
-    sizeSnapshot(),
-  ],
-  external: ["react", "react-dom"],
-  output: [
-    {
-      format: "es",
-      file: path.resolve(distDir, "index.js"),
-    },
-  ],
+    ],
+  };
 };
+
+export default [
+  createRollupConfig({ modern: true }),
+  createRollupConfig({ modern: false }),
+];

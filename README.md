@@ -39,52 +39,90 @@ const App = () => {
 };
 ```
 
-## Customization
+## Customizing
 
-If you want to pass custom `debounce` or `throttle` implementation (or any function that has similar interface), you could use `createDebounceHook`. It takes a function that'll debounce a callback and returns hook.
+This library uses its own implementations of `debounce` and `throttle` functions. But in some cases, you may want to change it (not enough options, smaller bundle size, etc.). For this purpose, you could use `createDebounceHook`:
 
 ```jsx
 import { createDebounceHook } from "tiny-use-debounce";
-import { debounce, throttle } from "./some/file";
+import { debounce, throttle } from "lodash";
 
 const useDebounce = createDebounceHook(debounce);
 const useThrottle = createDebounceHook(throttle);
+
+const options = {
+  leading: true,
+};
+
+const App = () => {
+  const debouncedFn = useDebounce(() => console.log("here"), 100, options);
+  const throttledFn = useThrottle(() => console.log("here"), 100, options);
+  // ...
+};
 ```
 
 ## Memoization
 
-The function returned from the hook will be alway memoized and have the same reference if `options` object is referentially equal. So if they don't change between rerenders, move them out of the component. If the change, `useMemo` to prevent updates on each render.
+By default, functions returned from hooks will always be memoized.
 
 ```jsx
-import { useMemo } from "react";
-import { useDebounce } from "tiny-use-debounce";
+const debouncedFn = useDebounce(() => {
+  /* ... */
+}, 100);
 
-// options are the same, we can move them out
-// of the component
+useEffect(() => {
+  /* ... */
+}, [
+  //could be safely used as a dependency since reference will never change
+  debounceFn,
+]);
+```
+
+But if you create your own hook with `createDebounceHook`, you need to be a little more cautious. The first argument (the callback) will not make any effect on memoization. But other arguments will be compared referentially. So if your `debounce` implementation uses objects as options they need to be declared outside of the component or memoized. Take a look at the example below:
+
+```jsx
+import { createDebounceHook } from "tiny-use-debounce";
+import { debounce, throttle } from "lodash";
+
+const useDebounce = createDebounceHook(debounce);
+
 const stableOptions = { leading: true };
 
-const App = ({ shouldCallInitially }) => {
-  const debounceFn = useDebounce(
+const App = () => {
+  const options = { leading: true };
+
+  // this function will be recreated on each rerender
+  // because options object has new reference
+  const debounceFn1 = useDebounce(
     () => {
       /* ... */
     },
-    200,
+    100,
+    options
+  );
+
+  // this function will always have the same reference
+  // because all additional arguments have the same
+  // reference between renders
+  const debounceFn2 = useDebounce(
+    () => {
+      /* ... */
+    },
+    100,
     stableOptions
   );
 
-  // options are dynamic, useMemo to reduce
-  // updates
-  const dynamicDebounceOptions = useMemo(
-    () => ({ leading: shouldCallInitially }),
-    [shouldCallInitially]
-  );
+  const [leading, setLeading] = useState(true);
+  const memoOptions = useMemo(() => ({ leading }), [leading]);
 
-  const debouncedFn2 = useDebounce(
+  // this function will only update when `leading`
+  // changes, other updates will not break memoization
+  const debounceFn3 = useDebounce(
     () => {
       /* ... */
     },
-    200,
-    dynamicDebounceOptions
+    100,
+    memoOptions
   );
 };
 ```
@@ -103,7 +141,7 @@ Creates hook that uses proved function for debouncing.
 
 Usage:
 
-- `useDebounce(cb, wait?, options?)`
+- `useDebounce(cb, wait)`
 
 Creates debounced function.
 
@@ -111,7 +149,7 @@ Creates debounced function.
 
 Usage:
 
-- `useThrottle(cb, wait?, options?)`
+- `useThrottle(cb, wait)`
 
 Creates throttled function.
 

@@ -133,29 +133,66 @@ const App = () => {
 
 ## API
 
-### `createDebounceHook`
-
-Usage:
-
-- `createDebounceHook(debounce)`
-
-Creates hook that uses proved function for debouncing.
-
 ### `useDebounce`
+
+Creates debounced function.
 
 Usage:
 
 - `useDebounce(cb, wait)`
 
-Creates debounced function.
+Type:
+
+```ts
+function useDebounce<
+  Callback extends AnyFunction
+>(
+  cb: Callback,
+  wait: number
+) => ((...args: Parameters<Callback>) => void) & {
+  cancel: () => void;
+};
+```
 
 ### `useThrottle`
+
+Creates throttled function.
 
 Usage:
 
 - `useThrottle(cb, wait)`
 
-Creates throttled function.
+Type:
+
+```ts
+function useDebounce<
+  Callback extends AnyFunction
+>(
+  cb: Callback,
+  wait: number
+) => ((...args: Parameters<Callback>) => void) & {
+  cancel: () => void;
+};
+```
+
+### `createDebounceHook`
+
+Creates hook that uses proved function for debouncing.
+
+Usage:
+
+- `createDebounceHook(debounce)`
+
+Type:
+
+```ts
+function createDebounceHook<DebounceFn extends AnyFunction>(
+  debounce: DebounceFn
+): <Callback extends AnyFunction>(
+  cb: Callback,
+  ...rest: Tail<Parameters<DebounceFn>>
+) => DebounceFunction<Callback, DebounceFn>;
+```
 
 ## License
 

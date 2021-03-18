@@ -1,11 +1,5 @@
 import { AnyFunction } from "./create-debounce-hook";
 
-export interface DebounceOptions {
-  leading?: boolean;
-  trailing?: boolean;
-  maxWait?: number;
-}
-
 const isNumber = (val: unknown): val is number => typeof val === "number";
 
 export const debounce = <T extends AnyFunction>(fn: T, wait: number) => {

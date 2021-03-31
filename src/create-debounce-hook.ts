@@ -9,13 +9,21 @@ type GetStaticMethods<T extends AnyFunction> = {
   [K in keyof T]: T[K];
 };
 
-type Tail<T extends unknown[]> = T extends [unknown, ...infer U] ? U : never;
+type Tail<T extends readonly unknown[]> = T extends [unknown, ...infer U]
+  ? U
+  : never;
 
-type DebounceFunction<T extends AnyFunction, U extends AnyFunction> = {
-  (...args: Parameters<T>): void;
-} & GetStaticMethods<ReturnType<U>>;
+// make sure debounce function to has a callback as a first argument
+type BaseDebouncer = (callback: AnyFunction, ...rest: any[]) => any;
 
-export function createDebounceHook<DebounceFn extends AnyFunction>(
+type DebounceFunction<
+  Callback extends AnyFunction,
+  Debounce extends BaseDebouncer
+> = {
+  (...args: Parameters<Callback>): void;
+} & GetStaticMethods<ReturnType<Debounce>>;
+
+export function createDebounceHook<DebounceFn extends BaseDebouncer>(
   debounce: DebounceFn
 ) {
   return function useDebounce<Callback extends AnyFunction>(
